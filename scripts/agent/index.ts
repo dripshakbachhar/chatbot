@@ -135,7 +135,8 @@ function collectSymbols(source: ts.SourceFile): SymbolRecord[] {
               name: declaration.name.text,
               kind,
               exported: isExported(node),
-              line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+              line:
+                source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
             });
           }
         }
@@ -145,8 +146,7 @@ function collectSymbols(source: ts.SourceFile): SymbolRecord[] {
           name: node.name.text,
           kind,
           exported: isExported(node),
-          line:
-            source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+          line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
         });
       }
     }

@@ -135,12 +135,26 @@ const RULES: Rule[] = [
   },
   {
     type: "AUTHENTICATION",
-    patterns: [/auth/i, /login/i, /logout/i, /session/i, /oauth/i, /password/i],
+    patterns: [
+      /auth/i,
+      /login/i,
+      /logout/i,
+      /session/i,
+      /oauth/i,
+      /password/i,
+    ],
     signal: "authentication language",
   },
   {
     type: "API",
-    patterns: [/api/i, /endpoint/i, /route/i, /request/i, /response/i, /http/i],
+    patterns: [
+      /api/i,
+      /endpoint/i,
+      /route/i,
+      /request/i,
+      /response/i,
+      /http/i,
+    ],
     signal: "API language",
   },
   {
@@ -210,9 +224,7 @@ export function classifyTask(input: string): TaskClassification {
   const matches = RULES.map((rule) => ({
     ...rule,
     count: rule.patterns.filter((pattern) => pattern.test(text)).length,
-  }))
-    .filter((rule) => rule.count > 0)
-    .sort((a, b) => b.count - a.count);
+  })).filter((rule) => rule.count > 0).sort((a, b) => b.count - a.count);
 
   if (matches.length === 0) {
     return {
