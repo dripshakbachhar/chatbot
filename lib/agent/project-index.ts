@@ -84,7 +84,9 @@ export function searchProjectIndex(
       tests: [],
     };
     current.score += score;
-    if (!current.reasons.includes(reason)) current.reasons.push(reason);
+    if (!current.reasons.includes(reason)) {
+      current.reasons.push(reason);
+    }
     matches.set(file, current);
   };
 
@@ -92,7 +94,9 @@ export function searchProjectIndex(
     const lowerPath = file.path.toLowerCase();
 
     for (const token of queryTokens) {
-      if (lowerPath.includes(token)) add(file.path, 10, `path matches "${token}"`);
+      if (lowerPath.includes(token)) {
+        add(file.path, 10, `path matches "${token}"`);
+      }
     }
 
     for (const hint of hints) {
@@ -101,7 +105,9 @@ export function searchProjectIndex(
       }
     }
 
-    if (file.category.toLowerCase().includes(classification.primary.toLowerCase())) {
+    if (
+      file.category.toLowerCase().includes(classification.primary.toLowerCase())
+    ) {
       add(file.path, 2, "category matches task");
     }
   }
@@ -109,17 +115,23 @@ export function searchProjectIndex(
   for (const symbol of index.symbols) {
     const lowerName = symbol.name.toLowerCase();
     const matched = queryTokens.filter((token) => lowerName.includes(token));
-    if (matched.length === 0) continue;
+    if (matched.length === 0) {
+      continue;
+    }
 
     add(symbol.file, 15 * matched.length, `symbol matches "${matched[0]}"`);
     const result = matches.get(symbol.file);
-    if (result && !result.symbols.includes(symbol.name)) result.symbols.push(symbol.name);
+    if (result && !result.symbols.includes(symbol.name)) {
+      result.symbols.push(symbol.name);
+    }
   }
 
   for (const route of index.routes) {
     const haystack = `${route.route} ${route.file} ${route.methods.join(" ")}`.toLowerCase();
     const matched = queryTokens.filter((token) => haystack.includes(token));
-    if (matched.length === 0 && classification.primary !== "API") continue;
+    if (matched.length === 0 && classification.primary !== "API") {
+      continue;
+    }
 
     add(
       route.file,
@@ -127,14 +139,20 @@ export function searchProjectIndex(
       matched.length ? `route matches "${matched[0]}"` : "API task matches route",
     );
     const result = matches.get(route.file);
-    if (result && !result.routes.includes(route.route)) result.routes.push(route.route);
+    if (result && !result.routes.includes(route.route)) {
+      result.routes.push(route.route);
+    }
   }
 
   for (const test of index.tests) {
     const haystack = `${test.file} ${test.likelyTargets.join(" ")}`.toLowerCase();
     const matched = queryTokens.filter((token) => haystack.includes(token));
 
-    if (matched.length === 0 && classification.primary !== "TESTING" && classification.primary !== "BUG") {
+    if (
+      matched.length === 0 &&
+      classification.primary !== "TESTING" &&
+      classification.primary !== "BUG"
+    ) {
       continue;
     }
 
@@ -144,7 +162,9 @@ export function searchProjectIndex(
       matched.length ? `test matches "${matched[0]}"` : "test coverage is relevant",
     );
     const result = matches.get(test.file);
-    if (result && !result.tests.includes(test.file)) result.tests.push(test.file);
+    if (result && !result.tests.includes(test.file)) {
+      result.tests.push(test.file);
+    }
   }
 
   return [...matches.values()]
