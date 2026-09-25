@@ -1,8 +1,8 @@
-import { classifyTask } from "../../lib/agent/task-classifier";
 import {
-  searchProjectIndex,
   type ProjectIndex,
+  searchProjectIndex,
 } from "../../lib/agent/project-index";
+import { classifyTask } from "../../lib/agent/task-classifier";
 
 function check(condition: boolean, message: string): void {
   if (!condition) {
@@ -69,18 +69,18 @@ const classification = classifyTask("Fix the chat API error");
 check(classification.primary === "BUG", "Expected BUG classification.");
 check(
   classification.secondary.includes("API"),
-  "Expected API as a secondary classification.",
+  "Expected API as a secondary classification."
 );
 
 const matches = searchProjectIndex(
   index,
   "Fix the chat API error",
   classification,
-  3,
+  3
 );
 check(
   matches[0]?.file === "app/(chat)/api/chat/route.ts",
-  "Expected the chat API route to rank first.",
+  "Expected the chat API route to rank first."
 );
 
 console.log("Agent intelligence self-check passed.");
