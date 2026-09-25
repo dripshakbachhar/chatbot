@@ -14,7 +14,7 @@ export type AgentContext = {
 
 export async function buildAgentContext(
   request: string,
-  options?: { index?: ProjectIndex; limit?: number },
+  options?: { index?: ProjectIndex; limit?: number }
 ): Promise<AgentContext> {
   const classification = classifyTask(request);
   const index = options?.index ?? (await loadProjectIndex());
@@ -26,7 +26,7 @@ export async function buildAgentContext(
       index,
       request,
       classification,
-      options?.limit ?? 8,
+      options?.limit ?? 8
     ),
   };
 }
