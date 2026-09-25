@@ -10,7 +10,7 @@ const IGNORED = new Set([
   "node_modules",
   ".turbo",
   "coverage",
-  ".project-agent"
+  ".project-agent",
 ]);
 
 const CATEGORY: Record<string, string> = {
@@ -22,7 +22,7 @@ const CATEGORY: Record<string, string> = {
   ".md": "documentation",
   ".sql": "database",
   ".css": "style",
-  ".mjs": "javascript-module"
+  ".mjs": "javascript-module",
 };
 
 type FileRecord = {
@@ -79,7 +79,7 @@ async function walk(directory: string): Promise<FileRecord[]> {
     files.push({
       path: relative,
       category: CATEGORY[extension] ?? "other",
-      bytes: stat.size
+      bytes: stat.size,
     });
   }
 
@@ -92,18 +92,32 @@ function isCodeFile(file: string) {
 
 function isExported(node: ts.Node): boolean {
   return !!node.modifiers?.some(
-    (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword
+    (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
   );
 }
 
 function symbolKind(node: ts.Node): string | null {
-  if (ts.isFunctionDeclaration(node)) return "function";
-  if (ts.isClassDeclaration(node)) return "class";
-  if (ts.isInterfaceDeclaration(node)) return "interface";
-  if (ts.isTypeAliasDeclaration(node)) return "type";
-  if (ts.isEnumDeclaration(node)) return "enum";
-  if (ts.isVariableStatement(node)) return "variable";
-  if (ts.isModuleDeclaration(node)) return "namespace";
+  if (ts.isFunctionDeclaration(node)) {
+    return "function";
+  }
+  if (ts.isClassDeclaration(node)) {
+    return "class";
+  }
+  if (ts.isInterfaceDeclaration(node)) {
+    return "interface";
+  }
+  if (ts.isTypeAliasDeclaration(node)) {
+    return "type";
+  }
+  if (ts.isEnumDeclaration(node)) {
+    return "enum";
+  }
+  if (ts.isVariableStatement(node)) {
+    return "variable";
+  }
+  if (ts.isModuleDeclaration(node)) {
+    return "namespace";
+  }
   return null;
 }
 
@@ -121,7 +135,8 @@ function collectSymbols(source: ts.SourceFile): SymbolRecord[] {
               name: declaration.name.text,
               kind,
               exported: isExported(node),
-              line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1
+              line:
+                source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
             });
           }
         }
@@ -131,7 +146,8 @@ function collectSymbols(source: ts.SourceFile): SymbolRecord[] {
           name: node.name.text,
           kind,
           exported: isExported(node),
-          line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1
+          line:
+            source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
         });
       }
     }
@@ -164,11 +180,10 @@ function collectImports(source: ts.SourceFile): string[] {
 
     if (
       ts.isImportEqualsDeclaration(statement) &&
-      ts.isExternalModuleReference(statement.moduleReference)
+      ts.isExternalModuleReference(statement.moduleReference) &&
+      ts.isStringLiteral(statement.moduleReference.expression)
     ) {
-      if (ts.isStringLiteral(statement.moduleReference.expression)) {
-        imports.add(statement.moduleReference.expression.text);
-      }
+      imports.add(statement.moduleReference.expression.text);
     }
   }
 
@@ -178,10 +193,10 @@ function collectImports(source: ts.SourceFile): string[] {
 function routeFromFile(file: string): string | null {
   const normalized = file.replaceAll(path.sep, "/");
   const match = normalized.match(
-    /^app\/\(.*?\)\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/
+    /^app\/\(.*?\)\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/,
   );
   const appMatch = normalized.match(
-    /^app\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/
+    /^app\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/,
   );
   const tail = match?.[1] ?? appMatch?.[1];
 
@@ -229,7 +244,8 @@ function detectTest(file: string): TestRecord | null {
       ? "playwright"
       : "unknown";
   const base = path.basename(file).replace(/\.(?:test|spec)\.[^.]+$/, "");
-  const likelyTargets = base === "api" ? ["app/**/api/**"] : base ? [base] : [];
+  const likelyTargets =
+    base === "api" ? ["app/**/api/**"] : base ? [base] : [];
 
   return { file, framework, likelyTargets };
 }
@@ -261,11 +277,11 @@ for (const file of codeFiles) {
     sourceText,
     ts.ScriptTarget.Latest,
     true,
-    file.path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS
+    file.path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
   );
 
   symbols.push(
-    ...collectSymbols(source).map((symbol) => ({ ...symbol, file: file.path }))
+    ...collectSymbols(source).map((symbol) => ({ ...symbol, file: file.path })),
   );
 
   const imports = collectImports(source);
@@ -278,7 +294,7 @@ for (const file of codeFiles) {
     routes.push({
       file: file.path,
       route,
-      methods: collectRouteMethods(source)
+      methods: collectRouteMethods(source),
     });
   }
 
@@ -291,11 +307,11 @@ for (const file of codeFiles) {
 const packageJson = await readJson(path.join(ROOT, "package.json"));
 const dependenciesByPackage = {
   dependencies: Object.keys(
-    (packageJson?.dependencies ?? {}) as Record<string, unknown>
+    (packageJson?.dependencies ?? {}) as Record<string, unknown>,
   ).sort(),
   devDependencies: Object.keys(
-    (packageJson?.devDependencies ?? {}) as Record<string, unknown>
-  ).sort()
+    (packageJson?.devDependencies ?? {}) as Record<string, unknown>,
+  ).sort(),
 };
 
 const index = {
@@ -305,16 +321,16 @@ const index = {
   fileCount: files.length,
   files,
   symbols: symbols.sort(
-    (a, b) => a.file.localeCompare(b.file) || a.line - b.line
+    (a, b) => a.file.localeCompare(b.file) || a.line - b.line,
   ),
   dependencies,
   packages: dependenciesByPackage,
   routes: routes.sort((a, b) => a.route.localeCompare(b.route)),
-  tests: tests.sort((a, b) => a.file.localeCompare(b.file))
+  tests: tests.sort((a, b) => a.file.localeCompare(b.file)),
 };
 
 await fs.mkdir(path.dirname(OUTPUT), { recursive: true });
-await fs.writeFile(OUTPUT, JSON.stringify(index, null, 2) + "\n", "utf8");
+await fs.writeFile(OUTPUT, `${JSON.stringify(index, null, 2)}\n`, "utf8");
 
 console.log(
   [
@@ -322,6 +338,6 @@ console.log(
     `Symbols: ${symbols.length}`,
     `Dependency entries: ${dependencies.length}`,
     `Routes: ${routes.length}`,
-    `Tests: ${tests.length}`
-  ].join(" | ")
+    `Tests: ${tests.length}`,
+  ].join(" | "),
 );
