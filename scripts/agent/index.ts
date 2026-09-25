@@ -61,7 +61,9 @@ async function walk(directory: string): Promise<FileRecord[]> {
   const files: FileRecord[] = [];
 
   for (const entry of entries) {
-    if (IGNORED.has(entry.name)) continue;
+    if (IGNORED.has(entry.name)) {
+      continue;
+    }
 
     const absolute = path.join(directory, entry.name);
     const relative = path.relative(ROOT, absolute).replaceAll(path.sep, "/");
@@ -89,7 +91,9 @@ function isCodeFile(file: string) {
 }
 
 function isExported(node: ts.Node): boolean {
-  return !!node.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword);
+  return !!node.modifiers?.some(
+    (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword,
+  );
 }
 
 function symbolKind(node: ts.Node): string | null {
@@ -117,20 +121,27 @@ function collectSymbols(source: ts.SourceFile): SymbolRecord[] {
               name: declaration.name.text,
               kind,
               exported: isExported(node),
-              line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+              line:
+                source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
             });
           }
         }
-      } else if ("name" in node && node.name && ts.isIdentifier(node.name)) {
+      } else if (
+        "name" in node &&
+        node.name &&
+        ts.isIdentifier(node.name)
+      ) {
         symbols.push({
           file: source.fileName,
           name: node.name.text,
           kind,
           exported: isExported(node),
-          line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+          line:
+            source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
         });
       }
     }
+
     ts.forEachChild(node, visit);
   };
 
@@ -142,7 +153,10 @@ function collectImports(source: ts.SourceFile): string[] {
   const imports = new Set<string>();
 
   for (const statement of source.statements) {
-    if (ts.isImportDeclaration(statement) && ts.isStringLiteral(statement.moduleSpecifier)) {
+    if (
+      ts.isImportDeclaration(statement) &&
+      ts.isStringLiteral(statement.moduleSpecifier)
+    ) {
       imports.add(statement.moduleSpecifier.text);
     }
 
@@ -154,7 +168,10 @@ function collectImports(source: ts.SourceFile): string[] {
       imports.add(statement.moduleSpecifier.text);
     }
 
-    if (ts.isImportEqualsDeclaration(statement) && ts.isExternalModuleReference(statement.moduleReference)) {
+    if (
+      ts.isImportEqualsDeclaration(statement) &&
+      ts.isExternalModuleReference(statement.moduleReference)
+    ) {
       if (ts.isStringLiteral(statement.moduleReference.expression)) {
         imports.add(statement.moduleReference.expression.text);
       }
@@ -166,46 +183,72 @@ function collectImports(source: ts.SourceFile): string[] {
 
 function routeFromFile(file: string): string | null {
   const normalized = file.replaceAll(path.sep, "/");
-  const match = normalized.match(/^app\/\(.*?\)\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/);
-  const appMatch = normalized.match(/^app\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/);
+  const match = normalized.match(
+    /^app\/\(.*?\)\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/,
+  );
+  const appMatch = normalized.match(
+    /^app\/api\/(.+)\/route\.(?:ts|tsx|js|jsx)$/,
+  );
   const tail = match?.[1] ?? appMatch?.[1];
 
-  if (!tail) return null;
+  if (!tail) {
+    return null;
+  }
 
-  return "/" + tail
-    .split("/")
-    .filter(Boolean)
-    .map((segment) => segment.replace(/^\[(.+)\]$/, ":$1"))
-    .join("/");
+  return (
+    "/" +
+    tail
+      .split("/")
+      .filter(Boolean)
+      .map((segment) => segment.replace(/^\[(.+)\]$/, ":$1"))
+      .join("/")
+  );
 }
 
 function collectRouteMethods(source: ts.SourceFile): string[] {
   const methods = new Set<string>();
 
   for (const statement of source.statements) {
-    if (!ts.isFunctionDeclaration(statement) || !statement.name) continue;
+    if (!ts.isFunctionDeclaration(statement) || !statement.name) {
+      continue;
+    }
+
     const name = statement.name.text.toUpperCase();
-    if (/^(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)$/.test(name)) methods.add(name);
+    if (/^(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)$/.test(name)) {
+      methods.add(name);
+    }
   }
 
   return [...methods].sort();
 }
 
 function detectTest(file: string): TestRecord | null {
-  if (!/(?:^|\/)(?:tests?|e2e)(?:\/|$)/i.test(file) && !/\.(?:test|spec)\.[^.]+$/i.test(file)) {
+  if (
+    !/(?:^|\/)(?:tests?|e2e)(?:\/|$)/i.test(file) &&
+    !/\.(?:test|spec)\.[^.]+$/i.test(file)
+  ) {
     return null;
   }
 
-  const framework = file.includes("playwright") || file.includes("e2e") ? "playwright" : "unknown";
+  const framework =
+    file.includes("playwright") || file.includes("e2e")
+      ? "playwright"
+      : "unknown";
   const base = path.basename(file).replace(/\.(?:test|spec)\.[^.]+$/, "");
-  const likelyTargets = base === "api" ? ["app/**/api/**"] : base ? [base] : [];
+  const likelyTargets =
+    base === "api" ? ["app/**/api/**"] : base ? [base] : [];
 
   return { file, framework, likelyTargets };
 }
 
-async function readJson(file: string): Promise<Record<string, unknown> | null> {
+async function readJson(
+  file: string,
+): Promise<Record<string, unknown> | null> {
   try {
-    return JSON.parse(await fs.readFile(file, "utf8")) as Record<string, unknown>;
+    return JSON.parse(await fs.readFile(file, "utf8")) as Record<
+      string,
+      unknown
+    >;
   } catch {
     return null;
   }
@@ -230,10 +273,14 @@ for (const file of codeFiles) {
     file.path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
   );
 
-  symbols.push(...collectSymbols(source).map((symbol) => ({ ...symbol, file: file.path })));
+  symbols.push(
+    ...collectSymbols(source).map((symbol) => ({ ...symbol, file: file.path })),
+  );
 
   const imports = collectImports(source);
-  if (imports.length > 0) dependencies.push({ file: file.path, imports });
+  if (imports.length > 0) {
+    dependencies.push({ file: file.path, imports });
+  }
 
   const route = routeFromFile(file.path);
   if (route) {
@@ -245,13 +292,19 @@ for (const file of codeFiles) {
   }
 
   const test = detectTest(file.path);
-  if (test) tests.push(test);
+  if (test) {
+    tests.push(test);
+  }
 }
 
 const packageJson = await readJson(path.join(ROOT, "package.json"));
 const dependenciesByPackage = {
-  dependencies: Object.keys((packageJson?.dependencies ?? {}) as Record<string, unknown>).sort(),
-  devDependencies: Object.keys((packageJson?.devDependencies ?? {}) as Record<string, unknown>).sort(),
+  dependencies: Object.keys(
+    (packageJson?.dependencies ?? {}) as Record<string, unknown>,
+  ).sort(),
+  devDependencies: Object.keys(
+    (packageJson?.devDependencies ?? {}) as Record<string, unknown>,
+  ).sort(),
 };
 
 const index = {
@@ -260,7 +313,9 @@ const index = {
   repository: "dripshakbachhar/chatbot",
   fileCount: files.length,
   files,
-  symbols: symbols.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line),
+  symbols: symbols.sort(
+    (a, b) => a.file.localeCompare(b.file) || a.line - b.line,
+  ),
   dependencies,
   packages: dependenciesByPackage,
   routes: routes.sort((a, b) => a.route.localeCompare(b.route)),
@@ -268,7 +323,11 @@ const index = {
 };
 
 await fs.mkdir(path.dirname(OUTPUT), { recursive: true });
-await fs.writeFile(OUTPUT, JSON.stringify(index, null, 2) + "\n", "utf8");
+await fs.writeFile(
+  OUTPUT,
+  JSON.stringify(index, null, 2) + "\n",
+  "utf8",
+);
 
 console.log(
   [
