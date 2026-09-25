@@ -50,16 +50,20 @@ const TASK_HINTS: Record<TaskType, string[]> = {
 };
 
 function tokens(input: string): string[] {
-  return [...new Set(
-    input
-      .toLowerCase()
-      .split(/[^a-z0-9_./-]+/)
-      .map((token) => token.trim())
-      .filter((token) => token.length >= 2),
-  )];
+  return [
+    ...new Set(
+      input
+        .toLowerCase()
+        .split(/[^a-z0-9_./-]+/)
+        .map((token) => token.trim())
+        .filter((token) => token.length >= 2),
+    ),
+  ];
 }
 
-export async function loadProjectIndex(indexPath = INDEX_PATH): Promise<ProjectIndex> {
+export async function loadProjectIndex(
+  indexPath = INDEX_PATH,
+): Promise<ProjectIndex> {
   const content = await fs.readFile(indexPath, "utf8");
   return JSON.parse(content) as ProjectIndex;
 }
@@ -127,7 +131,8 @@ export function searchProjectIndex(
   }
 
   for (const route of index.routes) {
-    const haystack = `${route.route} ${route.file} ${route.methods.join(" ")}`.toLowerCase();
+    const haystack =
+      `${route.route} ${route.file} ${route.methods.join(" ")}`.toLowerCase();
     const matched = queryTokens.filter((token) => haystack.includes(token));
     if (matched.length === 0 && classification.primary !== "API") {
       continue;
@@ -136,7 +141,9 @@ export function searchProjectIndex(
     add(
       route.file,
       matched.length ? 18 * matched.length : 7,
-      matched.length ? `route matches "${matched[0]}"` : "API task matches route",
+      matched.length
+        ? `route matches "${matched[0]}"`
+        : "API task matches route",
     );
     const result = matches.get(route.file);
     if (result && !result.routes.includes(route.route)) {
@@ -145,7 +152,8 @@ export function searchProjectIndex(
   }
 
   for (const test of index.tests) {
-    const haystack = `${test.file} ${test.likelyTargets.join(" ")}`.toLowerCase();
+    const haystack =
+      `${test.file} ${test.likelyTargets.join(" ")}`.toLowerCase();
     const matched = queryTokens.filter((token) => haystack.includes(token));
 
     if (
@@ -159,7 +167,9 @@ export function searchProjectIndex(
     add(
       test.file,
       matched.length ? 12 * matched.length : 5,
-      matched.length ? `test matches "${matched[0]}"` : "test coverage is relevant",
+      matched.length
+        ? `test matches "${matched[0]}"`
+        : "test coverage is relevant",
     );
     const result = matches.get(test.file);
     if (result && !result.tests.includes(test.file)) {
