@@ -56,13 +56,13 @@ function tokens(input: string): string[] {
         .toLowerCase()
         .split(/[^a-z0-9_./-]+/)
         .map((token) => token.trim())
-        .filter((token) => token.length >= 2),
+        .filter((token) => token.length >= 2)
     ),
   ];
 }
 
 export async function loadProjectIndex(
-  indexPath = INDEX_PATH,
+  indexPath = INDEX_PATH
 ): Promise<ProjectIndex> {
   const content = await fs.readFile(indexPath, "utf8");
   return JSON.parse(content) as ProjectIndex;
@@ -72,7 +72,7 @@ export function searchProjectIndex(
   index: ProjectIndex,
   query: string,
   classification: TaskClassification,
-  limit = 8,
+  limit = 8
 ): ProjectMatch[] {
   const queryTokens = tokens(query);
   const hints = TASK_HINTS[classification.primary];
@@ -143,7 +143,7 @@ export function searchProjectIndex(
       matched.length ? 18 * matched.length : 7,
       matched.length
         ? `route matches "${matched[0]}"`
-        : "API task matches route",
+        : "API task matches route"
     );
     const result = matches.get(route.file);
     if (result && !result.routes.includes(route.route)) {
@@ -169,7 +169,7 @@ export function searchProjectIndex(
       matched.length ? 12 * matched.length : 5,
       matched.length
         ? `test matches "${matched[0]}"`
-        : "test coverage is relevant",
+        : "test coverage is relevant"
     );
     const result = matches.get(test.file);
     if (result && !result.tests.includes(test.file)) {
