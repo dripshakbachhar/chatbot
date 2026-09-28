@@ -18,10 +18,9 @@ test.describe("About Page", () => {
       page.getByRole("link", { name: "Repository" })
     ).toHaveAttribute("href", "https://github.com/dripshakbachhar/chatbot");
 
-    await expect(page.getByRole("link", { name: "Back to chat" })).toHaveAttribute(
-      "href",
-      "/"
-    );
+    await expect(
+      page.getByRole("link", { name: "Back to chat" })
+    ).toHaveAttribute("href", "/");
   });
 
   test("is reachable from the chat navigation", async ({ page }) => {
