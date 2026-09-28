@@ -67,8 +67,14 @@ export default function AboutPage() {
           </p>
         </header>
 
-        <section aria-labelledby="capabilities-heading" className="mt-10">
-          <h2 id="capabilities-heading" className="text-lg font-semibold">
+        <section
+          aria-labelledby="capabilities-heading"
+          className="mt-10"
+        >
+          <h2
+            className="text-lg font-semibold"
+            id="capabilities-heading"
+          >
             What it does
           </h2>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -77,7 +83,10 @@ export default function AboutPage() {
                 className="rounded-xl border border-border/60 bg-card p-5"
                 key={title}
               >
-                <Icon aria-hidden="true" className="size-5 text-muted-foreground" />
+                <Icon
+                  aria-hidden="true"
+                  className="size-5 text-muted-foreground"
+                />
                 <h3 className="mt-4 font-medium">{title}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {description}
@@ -95,7 +104,7 @@ export default function AboutPage() {
                 className="mt-0.5 size-5 text-muted-foreground"
               />
               <div>
-                <h2 id="models-heading" className="font-semibold">
+                <h2 className="font-semibold" id="models-heading">
                   Supported AI models
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -109,8 +118,14 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section aria-labelledby="architecture-heading" className="mt-10">
-          <h2 id="architecture-heading" className="text-lg font-semibold">
+        <section
+          aria-labelledby="architecture-heading"
+          className="mt-10"
+        >
+          <h2
+            className="text-lg font-semibold"
+            id="architecture-heading"
+          >
             Built with
           </h2>
           <dl className="mt-4 divide-y divide-border/60 rounded-xl border border-border/60 bg-card">
@@ -149,7 +164,10 @@ export default function AboutPage() {
                 className="rounded-xl border border-border/60 bg-card p-5"
                 key={title}
               >
-                <Icon aria-hidden="true" className="size-5 text-muted-foreground" />
+                <Icon
+                  aria-hidden="true"
+                  className="size-5 text-muted-foreground"
+                />
                 <h3 className="mt-4 font-medium">{title}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {text}
@@ -174,7 +192,10 @@ export default function AboutPage() {
               <GithubIcon aria-hidden="true" className="size-4" />
               Repository
             </Link>
-            <Link className="inline-flex items-center gap-2 hover:text-foreground" href="/">
+            <Link
+              className="inline-flex items-center gap-2 hover:text-foreground"
+              href="/"
+            >
               <FileTextIcon aria-hidden="true" className="size-4" />
               Back to chat
             </Link>
