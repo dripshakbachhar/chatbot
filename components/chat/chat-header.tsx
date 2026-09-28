@@ -1,11 +1,10 @@
 "use client";
 
-import { PanelLeftIcon } from "lucide-react";
+import { InfoIcon, PanelLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
-import { VercelIcon } from "./icons";
 import { VisibilitySelector, type VisibilityType } from "./visibility-selector";
 
 function PureChatHeader({
@@ -34,14 +33,11 @@ function PureChatHeader({
         <PanelLeftIcon className="size-4" />
       </Button>
 
-      <Link
-        className="flex size-8 items-center justify-center rounded-lg md:hidden"
-        href="https://vercel.com/templates/next.js/chatbot"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <VercelIcon size={14} />
-      </Link>
+      <Button asChild className="md:hidden" size="icon-sm" variant="ghost">
+        <Link href="/about" aria-label="About this chatbot">
+          <InfoIcon className="size-4" />
+        </Link>
+      </Button>
 
       {!isReadonly && (
         <VisibilitySelector
@@ -54,13 +50,9 @@ function PureChatHeader({
         asChild
         className="hidden rounded-lg bg-foreground px-4 text-background hover:bg-foreground/90 md:ml-auto md:flex"
       >
-        <Link
-          href="https://vercel.com/templates/next.js/chatbot"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <VercelIcon size={16} />
-          Deploy with Vercel
+        <Link href="/about">
+          <InfoIcon className="size-4" />
+          About
         </Link>
       </Button>
     </header>
