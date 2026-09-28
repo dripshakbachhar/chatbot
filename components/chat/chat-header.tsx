@@ -34,7 +34,7 @@ function PureChatHeader({
       </Button>
 
       <Button asChild className="md:hidden" size="icon-sm" variant="ghost">
-        <Link href="/about" aria-label="About this chatbot">
+        <Link aria-label="About this chatbot" href="/about">
           <InfoIcon className="size-4" />
         </Link>
       </Button>
