@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  InfoIcon,
   MessageSquareIcon,
   PanelLeftIcon,
   PenSquareIcon,
@@ -115,6 +116,19 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                   >
                     <PenSquareIcon className="size-4" />
                     <span className="font-medium">New chat</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    className="h-8 rounded-lg text-[13px] text-sidebar-foreground/60 transition-colors duration-150 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                    onClick={() => setOpenMobile(false)}
+                    tooltip="About"
+                  >
+                    <Link href="/about">
+                      <InfoIcon className="size-4" />
+                      <span>About</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 {user && (
