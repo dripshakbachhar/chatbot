@@ -23,4 +23,15 @@ test.describe("About Page", () => {
       "/"
     );
   });
+
+  test("is reachable from the chat navigation", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: "About" }).first().click();
+    await expect(page).toHaveURL(/\/about$/);
+    await expect(
+      page.getByRole("heading", {
+        name: "A focused AI workspace for conversations and documents.",
+      })
+    ).toBeVisible();
+  });
 });
