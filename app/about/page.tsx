@@ -113,7 +113,7 @@ export default function AboutPage() {
           <h2 id="architecture-heading" className="text-lg font-semibold">
             Built with
           </h2>
-          <div className="mt-4 divide-y divide-border/60 rounded-xl border border-border/60 bg-card">
+          <dl className="mt-4 divide-y divide-border/60 rounded-xl border border-border/60 bg-card">
             {stack.map(([label, value]) => (
               <div
                 className="grid gap-1 px-5 py-4 sm:grid-cols-[150px_1fr] sm:gap-4"
@@ -123,7 +123,7 @@ export default function AboutPage() {
                 <dd className="text-sm text-muted-foreground">{value}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </section>
 
         <section aria-labelledby="security-heading" className="mt-10">
