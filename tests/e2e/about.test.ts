@@ -33,4 +33,16 @@ test.describe("About Page", () => {
       })
     ).toBeVisible();
   });
+
+  test("is reachable from the mobile chat header", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("link", { name: "About this chatbot" })
+    ).toBeVisible();
+
+    await page.getByRole("link", { name: "About this chatbot" }).click();
+    await expect(page).toHaveURL(/\/about$/);
+  });
 });
