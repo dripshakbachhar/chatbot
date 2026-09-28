@@ -33,12 +33,12 @@ test.describe("Model Selector", () => {
     await modelButton.click();
 
     const searchInput = page.getByPlaceholder("Search models...");
-    await searchInput.fill("Mistral");
+    await searchInput.fill("DeepSeek");
 
-    await expect(page.getByText("Mistral Small").first()).toBeVisible();
+    await expect(page.getByText("DeepSeek V3.2").first()).toBeVisible();
   });
 
-  test("can close model selector by clicking outside", async ({ page }) => {
+  test("can close model selector by pressing Escape", async ({ page }) => {
     const modelButton = page
       .locator("button")
       .filter({ hasText: MODEL_BUTTON_REGEX })
@@ -59,8 +59,8 @@ test.describe("Model Selector", () => {
       .first();
     await modelButton.click();
 
-    await expect(page.getByText("Mistral")).toBeVisible();
-    await expect(page.getByText("Moonshot")).toBeVisible();
+    await expect(page.getByText("DeepSeek", { exact: true })).toBeVisible();
+    await expect(page.getByText("Moonshot", { exact: true })).toBeVisible();
   });
 
   test("can select a different model", async ({ page }) => {
@@ -70,12 +70,12 @@ test.describe("Model Selector", () => {
       .first();
     await modelButton.click();
 
-    await page.getByText("Mistral Small").first().click();
+    await page.getByText("DeepSeek V3.2").first().click();
 
     await expect(page.getByPlaceholder("Search models...")).not.toBeVisible();
 
     await expect(
-      page.locator("button").filter({ hasText: "Mistral Small" }).first()
+      page.locator("button").filter({ hasText: "DeepSeek V3.2" }).first()
     ).toBeVisible();
   });
 });
