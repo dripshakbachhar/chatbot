@@ -8,7 +8,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chatbot.vercel.app"),
   title: "Chatbot",
   description:
     "A production-oriented AI workspace for streaming conversations, persistent chat history, and document workflows.",
