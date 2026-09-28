@@ -52,15 +52,15 @@ test.describe("Model Selector", () => {
     await expect(page.getByPlaceholder("Search models...")).not.toBeVisible();
   });
 
-  test("shows model provider groups", async ({ page }) => {
+  test("shows the active model list", async ({ page }) => {
     const modelButton = page
       .locator("button")
       .filter({ hasText: MODEL_BUTTON_REGEX })
       .first();
     await modelButton.click();
 
-    await expect(page.getByText("DeepSeek", { exact: true })).toBeVisible();
-    await expect(page.getByText("Moonshot", { exact: true })).toBeVisible();
+    await expect(page.getByText("DeepSeek V3.2").first()).toBeVisible();
+    await expect(page.getByText("Kimi K2.5").first()).toBeVisible();
   });
 
   test("can select a different model", async ({ page }) => {
