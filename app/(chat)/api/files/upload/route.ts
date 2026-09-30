@@ -46,10 +46,11 @@ export async function POST(request: Request) {
 
     const filename = (formData.get("file") as File).name;
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const objectPath = `uploads/${session.user.id}/${crypto.randomUUID()}-${safeName}`;
     const fileBuffer = await file.arrayBuffer();
 
     try {
-      const data = await put(`${safeName}`, fileBuffer, {
+      const data = await put(objectPath, fileBuffer, {
         access: "public",
       });
 
