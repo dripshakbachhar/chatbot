@@ -49,16 +49,13 @@ export const regularPrompt = `You are a helpful assistant. Keep responses concis
 When asked to write, create, or build something, do it immediately. Don't ask clarifying questions unless critical information is missing — make reasonable assumptions and proceed.`;
 
 export type RequestHints = {
-  latitude: Geo["latitude"];
-  longitude: Geo["longitude"];
   city: Geo["city"];
   country: Geo["country"];
 };
 
-export const getRequestPromptFromHints = (requestHints: RequestHints) => `\
-About the origin of user's request:
-- lat: ${requestHints.latitude}
-- lon: ${requestHints.longitude}
+export const getRequestPromptFromHints = (
+  requestHints: RequestHints
+) => `About the origin of user's request:
 - city: ${requestHints.city}
 - country: ${requestHints.country}
 `;

@@ -39,6 +39,21 @@ The curated models are defined in `lib/ai/models.ts`. The current list includes 
 
 ## Local setup
 
+For the fastest reproducible local environment, use the included PostgreSQL and Redis Compose stack:
+
+```bash
+pnpm install --frozen-lockfile
+cp .env.local.example .env.local
+pnpm local:infra:up
+pnpm db:migrate
+pnpm dev
+```
+
+Open http://localhost:3000. Stop local infrastructure with `pnpm local:infra:down`.
+
+AI responses still require `AI_GATEWAY_API_KEY` outside Vercel, and file attachments still require `BLOB_READ_WRITE_TOKEN` unless a local storage adapter is introduced.
+
+
 1. Clone the repository.
 2. Install dependencies:
 
@@ -60,6 +75,12 @@ pnpm dev
 ```
 
 Open http://localhost:3000.
+
+## Engineering documentation
+
+- `docs/ARCHITECTURE.md` — request flows, boundaries, and local architecture.
+- `docs/ENGINEERING_ANALYSIS_PROMPT.md` — implementation-grade audit prompt for future engineering passes.
+- `SECURITY.md` — security-sensitive areas and reporting guidance.
 
 ## Validation
 

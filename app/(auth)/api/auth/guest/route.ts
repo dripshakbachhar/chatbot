@@ -6,10 +6,18 @@ import { isDevelopmentEnvironment } from "@/lib/constants";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const rawRedirect = searchParams.get("redirectUrl") || "/";
-  const redirectUrl =
-    rawRedirect.startsWith("/") && !rawRedirect.startsWith("//")
-      ? rawRedirect
-      : "/";
+  let redirectUrl = "/";
+
+  try {
+    const candidate = new URL(rawRedirect, request.url);
+    const requestOrigin = new URL(request.url).origin;
+
+    if (candidate.origin === requestOrigin) {
+      redirectUrl = candidate.pathname + candidate.search + candidate.hash;
+    }
+  } catch {
+    // Keep the safe root fallback for malformed redirect URLs.
+  }
 
   const token = await getToken({
     req: request,

@@ -17,20 +17,20 @@ const partSchema = z.union([textPartSchema, filePartSchema]);
 const userMessageSchema = z.object({
   id: z.string().uuid(),
   role: z.enum(["user"]),
-  parts: z.array(partSchema),
+  parts: z.array(partSchema).min(1).max(20),
 });
 
 const toolApprovalMessageSchema = z.object({
   id: z.string(),
   role: z.enum(["user", "assistant"]),
-  parts: z.array(z.record(z.unknown())),
+  parts: z.array(z.record(z.unknown())).max(20),
 });
 
 export const postRequestBodySchema = z.object({
   id: z.string().uuid(),
   message: userMessageSchema.optional(),
-  messages: z.array(toolApprovalMessageSchema).optional(),
-  selectedChatModel: z.string(),
+  messages: z.array(toolApprovalMessageSchema).max(20).optional(),
+  selectedChatModel: z.string().min(1).max(200),
   selectedVisibilityType: z.enum(["public", "private"]),
 });
 
