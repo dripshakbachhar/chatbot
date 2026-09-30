@@ -42,7 +42,10 @@ export async function POST(request: Request) {
     const validatedFile = FileSchema.safeParse({ file });
 
     if (!validatedFile.success) {
-      return NextResponse.json({ error: "Invalid file upload" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid file upload" },
+        { status: 400 }
+      );
     }
 
     const validationError = await validateImageFile(file);

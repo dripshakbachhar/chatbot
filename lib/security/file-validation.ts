@@ -25,10 +25,7 @@ export async function validateImageFile(file: Blob): Promise<string | null> {
     return "File contents do not match JPEG type";
   }
 
-  if (
-    file.type === "image/png" &&
-    !startsWithSignature(bytes, PNG_SIGNATURE)
-  ) {
+  if (file.type === "image/png" && !startsWithSignature(bytes, PNG_SIGNATURE)) {
     return "File contents do not match PNG type";
   }
 

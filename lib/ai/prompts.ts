@@ -53,7 +53,9 @@ export type RequestHints = {
   country: Geo["country"];
 };
 
-export const getRequestPromptFromHints = (requestHints: RequestHints) => `About the origin of user's request:
+export const getRequestPromptFromHints = (
+  requestHints: RequestHints
+) => `About the origin of user's request:
 - city: ${requestHints.city}
 - country: ${requestHints.country}
 `;

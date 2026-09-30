@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { validateImageFile } from "@/lib/security/file-validation";
 import { postRequestBodySchema } from "@/app/(chat)/api/chat/schema";
+import { validateImageFile } from "@/lib/security/file-validation";
 
 test.describe("File upload security validation", () => {
   test("accepts JPEG content with matching MIME type", async () => {

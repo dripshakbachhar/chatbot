@@ -1,8 +1,5 @@
 import { auth } from "@/app/(auth)/auth";
-import {
-  getDocumentById,
-  getSuggestionsByDocumentId,
-} from "@/lib/db/queries";
+import { getDocumentById, getSuggestionsByDocumentId } from "@/lib/db/queries";
 import { ChatbotError } from "@/lib/errors";
 
 export async function GET(request: Request) {
