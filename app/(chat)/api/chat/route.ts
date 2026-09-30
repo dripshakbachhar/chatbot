@@ -60,6 +60,11 @@ export { getStreamContext };
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
 
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > 1 * 1024 * 1024) {
+    return new ChatbotError("bad_request:api").toResponse();
+  }
+
   try {
     const json = await request.json();
     requestBody = postRequestBodySchema.parse(json);
