@@ -180,7 +180,7 @@ export async function getChatsByUserId({
       const [selectedChat] = await db
         .select()
         .from(chat)
-        .where(eq(chat.id, startingAfter))
+        .where(and(eq(chat.id, startingAfter), eq(chat.userId, id)))
         .limit(1);
 
       if (!selectedChat) {
@@ -195,7 +195,7 @@ export async function getChatsByUserId({
       const [selectedChat] = await db
         .select()
         .from(chat)
-        .where(eq(chat.id, endingBefore))
+        .where(and(eq(chat.id, endingBefore), eq(chat.userId, id)))
         .limit(1);
 
       if (!selectedChat) {
