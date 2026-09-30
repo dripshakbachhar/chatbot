@@ -98,18 +98,41 @@ export async function saveChat({
   }
 }
 
-export async function deleteChatById({ id }: { id: string }) {
+export async function deleteChatById({
+  id,
+  userId,
+}: {
+  id: string;
+  userId: string;
+}) {
   try {
-    await db.delete(vote).where(eq(vote.chatId, id));
-    await db.delete(message).where(eq(message.chatId, id));
-    await db.delete(stream).where(eq(stream.chatId, id));
+    const [ownedChat] = await db
+      .select({ id: chat.id })
+      .from(chat)
+      .where(and(eq(chat.id, id), eq(chat.userId, userId)))
+      .limit(1);
 
-    const [chatsDeleted] = await db
-      .delete(chat)
-      .where(eq(chat.id, id))
-      .returning();
-    return chatsDeleted;
+    if (!ownedChat) {
+      throw new ChatbotError("forbidden:chat", "Chat ownership check failed");
+    }
+
+    return await db.transaction(async (tx) => {
+      await tx.delete(vote).where(eq(vote.chatId, id));
+      await tx.delete(message).where(eq(message.chatId, id));
+      await tx.delete(stream).where(eq(stream.chatId, id));
+
+      const [chatsDeleted] = await tx
+        .delete(chat)
+        .where(and(eq(chat.id, id), eq(chat.userId, userId)))
+        .returning();
+
+      return chatsDeleted;
+    });
   } catch (_error) {
+    if (_error instanceof ChatbotError) {
+      throw _error;
+    }
+
     throw new ChatbotError(
       "bad_request:database",
       "Failed to delete chat by id"
@@ -284,10 +307,25 @@ export async function voteMessage({
   type: "up" | "down";
 }) {
   try {
+    const [targetMessage] = await db
+      .select({ id: message.id })
+      .from(message)
+      .where(and(eq(message.id, messageId), eq(message.chatId, chatId)))
+      .limit(1);
+
+    if (!targetMessage) {
+      throw new ChatbotError(
+        "forbidden:vote",
+        "Message does not belong to the requested chat"
+      );
+    }
+
     const [existingVote] = await db
       .select()
       .from(vote)
-      .where(and(eq(vote.messageId, messageId)));
+      .where(
+        and(eq(vote.messageId, messageId), eq(vote.chatId, chatId))
+      );
 
     if (existingVote) {
       return await db
@@ -295,12 +333,17 @@ export async function voteMessage({
         .set({ isUpvoted: type === "up" })
         .where(and(eq(vote.messageId, messageId), eq(vote.chatId, chatId)));
     }
+
     return await db.insert(vote).values({
       chatId,
       messageId,
       isUpvoted: type === "up",
     });
   } catch (_error) {
+    if (_error instanceof ChatbotError) {
+      throw _error;
+    }
+
     throw new ChatbotError("bad_request:database", "Failed to vote message");
   }
 }
@@ -462,14 +505,26 @@ export async function saveSuggestions({
 
 export async function getSuggestionsByDocumentId({
   documentId,
+  userId,
 }: {
   documentId: string;
+  userId: string;
 }) {
   try {
     return await db
-      .select()
+      .select({ suggestion })
       .from(suggestion)
-      .where(eq(suggestion.documentId, documentId));
+      .innerJoin(
+        document,
+        and(
+          eq(suggestion.documentId, document.id),
+          eq(suggestion.documentCreatedAt, document.createdAt)
+        )
+      )
+      .where(
+        and(eq(suggestion.documentId, documentId), eq(document.userId, userId))
+      )
+      .then((rows) => rows.map(({ suggestion }) => suggestion));
   } catch (_error) {
     throw new ChatbotError(
       "bad_request:database",
