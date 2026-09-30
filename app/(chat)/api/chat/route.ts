@@ -366,7 +366,10 @@ export async function DELETE(request: Request) {
     return new ChatbotError("forbidden:chat").toResponse();
   }
 
-  const deletedChat = await deleteChatById({ id });
+  const deletedChat = await deleteChatById({
+    id,
+    userId: session.user.id,
+  });
 
   return Response.json(deletedChat, { status: 200 });
 }
