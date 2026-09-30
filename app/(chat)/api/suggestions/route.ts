@@ -1,5 +1,8 @@
 import { auth } from "@/app/(auth)/auth";
-import { getSuggestionsByDocumentId } from "@/lib/db/queries";
+import {
+  getDocumentById,
+  getSuggestionsByDocumentId,
+} from "@/lib/db/queries";
 import { ChatbotError } from "@/lib/errors";
 
 export async function GET(request: Request) {
@@ -19,19 +22,20 @@ export async function GET(request: Request) {
     return new ChatbotError("unauthorized:suggestions").toResponse();
   }
 
-  const suggestions = await getSuggestionsByDocumentId({
-    documentId,
-  });
+  const document = await getDocumentById({ id: documentId });
 
-  const [suggestion] = suggestions;
-
-  if (!suggestion) {
-    return Response.json([], { status: 200 });
+  if (!document) {
+    return new ChatbotError("not_found:document").toResponse();
   }
 
-  if (suggestion.userId !== session.user.id) {
+  if (document.userId !== session.user.id) {
     return new ChatbotError("forbidden:api").toResponse();
   }
+
+  const suggestions = await getSuggestionsByDocumentId({
+    documentId,
+    userId: session.user.id,
+  });
 
   return Response.json(suggestions, { status: 200 });
 }
