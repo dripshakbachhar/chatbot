@@ -1,4 +1,4 @@
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+export const MAX_IMAGE_SIZE = 4 * 1024 * 1024;
 
 const JPEG_SIGNATURE = [0xff, 0xd8, 0xff];
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
@@ -9,7 +9,7 @@ function startsWithSignature(bytes: Uint8Array, signature: number[]) {
 
 export async function validateImageFile(file: Blob): Promise<string | null> {
   if (file.size > MAX_IMAGE_SIZE) {
-    return "File size should be less than 5MB";
+    return "File size should be less than 4MB";
   }
 
   if (!["image/jpeg", "image/png"].includes(file.type)) {
