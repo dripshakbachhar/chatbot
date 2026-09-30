@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { validateImageFile } from "@/lib/security/file-validation";
+import { postRequestBodySchema } from "@/app/(chat)/api/chat/schema";
 
 test.describe("File upload security validation", () => {
   test("accepts JPEG content with matching MIME type", async () => {
@@ -34,5 +35,23 @@ test.describe("File upload security validation", () => {
     await expect(validateImageFile(file)).resolves.toBe(
       "File type should be JPEG or PNG"
     );
+  });
+
+  test("rejects oversized chat part arrays", () => {
+    const result = postRequestBodySchema.safeParse({
+      id: "00000000-0000-0000-0000-000000000000",
+      message: {
+        id: "11111111-1111-1111-1111-111111111111",
+        role: "user",
+        parts: Array.from({ length: 21 }, () => ({
+          type: "text",
+          text: "x",
+        })),
+      },
+      selectedChatModel: "moonshotai/kimi-k2.5",
+      selectedVisibilityType: "private",
+    });
+
+    expect(result.success).toBe(false);
   });
 });
