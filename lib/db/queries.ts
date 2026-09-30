@@ -319,9 +319,7 @@ export async function voteMessage({
       .limit(1);
 
     if (!targetMessage) {
-      throw new ChatbotError(
-        "forbidden:vote",
-      );
+      throw new ChatbotError("forbidden:vote");
     }
 
     const [existingVote] = await db
