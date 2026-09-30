@@ -113,7 +113,7 @@ export async function deleteChatById({
       .limit(1);
 
     if (!ownedChat) {
-      throw new ChatbotError("forbidden:chat", "Chat ownership check failed");
+      throw new ChatbotError("forbidden:chat");
     }
 
     return await db.transaction(async (tx) => {
@@ -321,7 +321,6 @@ export async function voteMessage({
     if (!targetMessage) {
       throw new ChatbotError(
         "forbidden:vote",
-        "Message does not belong to the requested chat"
       );
     }
 
