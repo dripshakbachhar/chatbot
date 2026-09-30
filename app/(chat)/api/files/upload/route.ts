@@ -22,7 +22,10 @@ export async function POST(request: Request) {
 
   const contentLength = Number(request.headers.get("content-length") ?? 0);
   if (contentLength > 5 * 1024 * 1024 + 128 * 1024) {
-    return NextResponse.json({ error: "Request body is too large" }, { status: 413 });
+    return NextResponse.json(
+      { error: "Request body is too large" },
+      { status: 413 }
+    );
   }
 
   try {
