@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { auth } from "@/app/(auth)/auth";
-import { validateImageFile } from "@/lib/security/file-validation";
+import {
+  MAX_IMAGE_SIZE,
+  validateImageFile,
+} from "@/lib/security/file-validation";
 
 const FileSchema = z.object({
   file: z.instanceof(Blob),
@@ -21,7 +24,7 @@ export async function POST(request: Request) {
   }
 
   const contentLength = Number(request.headers.get("content-length") ?? 0);
-  if (contentLength > 5 * 1024 * 1024 + 128 * 1024) {
+  if (contentLength > MAX_IMAGE_SIZE + 128 * 1024) {
     return NextResponse.json(
       { error: "Request body is too large" },
       { status: 413 }
