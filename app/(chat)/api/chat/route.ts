@@ -161,11 +161,9 @@ export async function POST(request: Request) {
       ];
     }
 
-    const { longitude, latitude, city, country } = geolocation(request);
+    const { city, country } = geolocation(request);
 
     const requestHints: RequestHints = {
-      longitude,
-      latitude,
       city,
       country,
     };
