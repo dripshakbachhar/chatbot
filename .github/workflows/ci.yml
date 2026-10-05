@@ -58,11 +58,15 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Commit regenerated lockfile
-        if: github.event_name == 'pull_request' && github.head_ref == 'feat/about-and-runtime'
+        if: github.event_name == 'pull_request' && github.head_ref == 'feat/about-and-runtime' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
+          cp pnpm-lock.yaml /tmp/pnpm-lock.yaml
+          git fetch origin "${GITHUB_HEAD_REF}"
+          git checkout -B "${GITHUB_HEAD_REF}" "origin/${GITHUB_HEAD_REF}"
+          cp /tmp/pnpm-lock.yaml pnpm-lock.yaml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json pnpm-lock.yaml
+          git add pnpm-lock.yaml
           if git diff --cached --quiet; then
             echo "No dependency lockfile changes to commit."
             exit 0
