@@ -53,7 +53,7 @@ async function main() {
 
   if (unknownModel) {
     throw new Error(
-      "Model is not in the curated application allowlist: " + unknownModel
+      `Model is not in the curated application allowlist: ${unknownModel}`
     );
   }
 
@@ -102,7 +102,7 @@ async function main() {
   await mkdir(outputDir, { recursive: true });
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const outputPath = outputDir + "/run-" + timestamp + ".json";
+  const outputPath = `${outputDir}/run-${timestamp}.json`;
 
   await writeFile(
     outputPath,
