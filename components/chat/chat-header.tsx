@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelLeftIcon } from "lucide-react";
+import { InfoIcon, PanelLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
@@ -36,11 +36,10 @@ function PureChatHeader({
 
       <Link
         className="flex size-8 items-center justify-center rounded-lg md:hidden"
-        href="https://vercel.com/templates/next.js/chatbot"
-        rel="noopener noreferrer"
-        target="_blank"
+        href="/about"
+        aria-label="About"
       >
-        <VercelIcon size={14} />
+        <InfoIcon className="size-4" />
       </Link>
 
       {!isReadonly && (
@@ -50,19 +49,27 @@ function PureChatHeader({
         />
       )}
 
-      <Button
-        asChild
-        className="hidden rounded-lg bg-foreground px-4 text-background hover:bg-foreground/90 md:ml-auto md:flex"
-      >
-        <Link
-          href="https://vercel.com/templates/next.js/chatbot"
-          rel="noopener noreferrer"
-          target="_blank"
+      <div className="ml-auto flex items-center gap-2">
+        <Button asChild className="rounded-lg" variant="ghost">
+          <Link href="/about">
+            <InfoIcon className="size-4" />
+            About
+          </Link>
+        </Button>
+        <Button
+          asChild
+          className="hidden rounded-lg bg-foreground px-4 text-background hover:bg-foreground/90 sm:flex"
         >
-          <VercelIcon size={16} />
-          Deploy with Vercel
-        </Link>
-      </Button>
+          <Link
+            href="https://vercel.com/templates/next.js/chatbot"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <VercelIcon size={16} />
+            Deploy with Vercel
+          </Link>
+        </Button>
+      </div>
     </header>
   );
 }
