@@ -13,7 +13,7 @@
   {"id":"structured-02","category":"structured","prompt":"Return a JSON object with exactly three fields: score (number 0-100), passed (boolean), reason (string). Use score 84 and infer the other two fields consistently."},
   {"id":"structured-03","category":"structured","prompt":"Return a JSON array containing exactly four objects. Each object must contain id (integer) and label (string). Use ids 1 through 4 and labels A through D."},
   {"id":"structured-04","category":"structured","prompt":"Return exactly one JSON object with fields items and total. items must be an array of three numbers [4, 9, 12], and total must equal their sum."},
-  {"id":"structured-05","category":"structured","prompt":"Return exactly this schema as JSON: language (string), compiled (boolean), extensions (string array). Use TypeScript, true, and [".ts", ".tsx"]."},
+  {"id":"structured-05","category":"structured","prompt":"Return exactly this schema as JSON: language (string), compiled (boolean), extensions (string array). Use TypeScript, true, and extensions [dot-ts, dot-tsx]."},
   {"id":"instruction-01","category":"instruction","prompt":"Explain photosynthesis to a 12-year-old in exactly three bullet points. Do not use the word chlorophyll."},
   {"id":"instruction-02","category":"instruction","prompt":"Summarize this statement in exactly 15 words: Reliable experiments require controlled variables, repeatable procedures, transparent measurements, and honest reporting of uncertainty."},
   {"id":"instruction-03","category":"instruction","prompt":"Give exactly five practical steps for debugging a failing automated test. Number the steps 1 through 5 and keep each step under 15 words."},
