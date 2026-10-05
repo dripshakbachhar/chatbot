@@ -18,7 +18,8 @@
     "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
     "local:infra:up": "docker compose -f docker-compose.local.yml up -d",
     "local:infra:down": "docker compose -f docker-compose.local.yml down",
-    "local:infra:logs": "docker compose -f docker-compose.local.yml logs -f"
+    "local:infra:logs": "docker compose -f docker-compose.local.yml logs -f",
+    "benchmark:run": "tsx research/benchmark/run.ts"
   },
   "dependencies": {
     "@ai-sdk/provider": "^3.0.3",
