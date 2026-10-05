@@ -35,12 +35,9 @@ async function main() {
     );
   }
 
-  const tasks = JSON.parse(
-    await readFile(tasksPath, "utf8")
-  ) as Task[];
+  const tasks = JSON.parse(await readFile(tasksPath, "utf8")) as Task[];
 
-  const requestedModels = process.env.BENCHMARK_MODELS
-    ?.split(",")
+  const requestedModels = process.env.BENCHMARK_MODELS?.split(",")
     .map((value) => value.trim())
     .filter(Boolean);
 
