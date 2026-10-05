@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const models = [
   "DeepSeek V3.2",
@@ -16,6 +15,33 @@ const models = [
   "GPT OSS 20B",
   "GPT OSS 120B",
   "Grok 4.1 Fast",
+];
+
+const sections = [
+  {
+    icon: SparklesIcon,
+    title: "AI conversations",
+    description:
+      "Stream responses through the Vercel AI SDK and switch between the curated models available in the application.",
+  },
+  {
+    icon: DatabaseIcon,
+    title: "Persistent workspace",
+    description:
+      "Authenticated users can keep conversations and related data in PostgreSQL through the application's Drizzle data layer.",
+  },
+  {
+    icon: FileTextIcon,
+    title: "Documents and files",
+    description:
+      "The workspace supports file attachments and document-oriented tools, backed by the application's storage and artifact flows.",
+  },
+  {
+    icon: LockKeyholeIcon,
+    title: "Authentication and security",
+    description:
+      "Authentication is handled with NextAuth. Secrets belong in the local or Vercel environment, never in source control.",
+  },
 ];
 
 export default function AboutPage() {
@@ -47,47 +73,18 @@ export default function AboutPage() {
         </header>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <SparklesIcon className="size-5 text-muted-foreground" />
-              <CardTitle>AI conversations</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-6">
-              Stream responses through the Vercel AI SDK and switch between the
-              curated models available in the application.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <DatabaseIcon className="size-5 text-muted-foreground" />
-              <CardTitle>Persistent workspace</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-6">
-              Authenticated users can keep conversations and related data in
-              PostgreSQL through the application&apos;s Drizzle data layer.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <FileTextIcon className="size-5 text-muted-foreground" />
-              <CardTitle>Documents and files</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-6">
-              The workspace supports file attachments and document-oriented
-              tools, backed by the application&apos;s storage and artifact
-              flows.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <LockKeyholeIcon className="size-5 text-muted-foreground" />
-              <CardTitle>Authentication and security</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-6">
-              Authentication is handled with NextAuth. Secrets belong in the
-              local or Vercel environment, never in source control.
-            </CardContent>
-          </Card>
+          {sections.map(({ description, icon: Icon, title }) => (
+            <section
+              className="rounded-xl border bg-card p-6 shadow-xs"
+              key={title}
+            >
+              <Icon className="size-5 text-muted-foreground" />
+              <h2 className="mt-4 font-semibold text-lg">{title}</h2>
+              <p className="mt-2 text-muted-foreground text-sm leading-6">
+                {description}
+              </p>
+            </section>
+          ))}
         </div>
 
         <section className="mt-10 rounded-xl border bg-muted/20 p-6 md:p-8">
