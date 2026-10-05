@@ -1,25 +1,22 @@
 # Security Policy
 
-## Scope
+## Supported Versions
 
-This project is an AI chatbot with authentication, persistent user data, file uploads, external model providers, and optional Redis-backed rate limiting.
+This project is maintained on its default branch. Security fixes are applied to the current development version rather than to a numbered release series.
 
-## Reporting
+| Version | Supported |
+| ------- | --------- |
+| main    | :white_check_mark: |
 
-Do not publish credentials, session tokens, private user data, or an exploit that exposes real user information in a public issue.
+## Reporting a Vulnerability
 
-For sensitive vulnerabilities, use GitHub's private security-reporting mechanism when available. Otherwise open only a high-level public issue and request private contact.
+Please report suspected security vulnerabilities privately rather than opening a public issue.
 
-## Security-sensitive areas
+Include:
+- a clear description of the vulnerability;
+- steps to reproduce it;
+- the affected component or file, if known;
+- the potential impact; and
+- any suggested mitigation, if available.
 
-- authentication and session handling
-- authorization and resource ownership
-- file uploads and externally accessible URLs
-- AI model/tool execution
-- database queries
-- environment variables and API keys
-- rate limiting and abuse controls
-
-## Secret handling
-
-Never commit `.env.local`, production credentials, API keys, session secrets, database passwords, or private tokens. Use `.env.local` for local secrets and keep environment templates placeholder-only.
+Do not include secrets or other sensitive information in a public issue. Security reports will be reviewed and addressed based on severity and reproducibility.
