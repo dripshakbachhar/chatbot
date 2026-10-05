@@ -1,22 +1,102 @@
 [
-  {"id":"reasoning-01","category":"reasoning","prompt":"A library has 240 books. Three-fifths are fiction. Of the fiction books, one-quarter are mysteries. How many mystery books are there? Give the calculation and final number."},
-  {"id":"reasoning-02","category":"reasoning","prompt":"A sequence begins 3, 7, 15, 31, 63. Identify the simplest rule generating the sequence and give the next two terms."},
-  {"id":"reasoning-03","category":"reasoning","prompt":"All researchers in Team A submitted a report. Mina is a researcher in Team A. What conclusion follows necessarily? State one conclusion and briefly explain why."},
-  {"id":"reasoning-04","category":"reasoning","prompt":"A machine processes 18 items in 6 minutes at a constant rate. How many items can it process in 25 minutes? Show the reasoning."},
-  {"id":"reasoning-05","category":"reasoning","prompt":"Three switches control three labeled lamps in another room. You may enter the lamp room only once. Describe a strategy that lets you determine which switch controls each lamp."},
-  {"id":"coding-01","category":"coding","prompt":"Write a TypeScript function that returns the first duplicate number in an array, scanning from left to right. Return null when there is no duplicate. State the time and space complexity."},
-  {"id":"coding-02","category":"coding","prompt":"Write a TypeScript function that groups an array of objects by a string key and returns a Record<string, object[]>. Include a concise example."},
-  {"id":"coding-03","category":"coding","prompt":"Given the TypeScript expression const value = input?.items?.[0]?.name ?? unknown, explain exactly what happens when input is null, items is missing, the array is empty, and name is undefined."},
-  {"id":"coding-04","category":"coding","prompt":"Design a TypeScript function that validates whether a string is a valid UUID v4 using a regular expression. Mention one limitation of regex-only validation."},
-  {"id":"coding-05","category":"coding","prompt":"A JavaScript function repeatedly concatenates strings inside a loop of n iterations. Explain why this can be inefficient and provide a clearer alternative using an array and join()."},
-  {"id":"structured-01","category":"structured","prompt":"Return exactly these JSON fields: name, country, capital. Use the values: name=Japan, country=Asia, capital=Tokyo. Do not include any other fields."},
-  {"id":"structured-02","category":"structured","prompt":"Return a JSON object with exactly three fields: score (number 0-100), passed (boolean), reason (string). Use score 84 and infer the other two fields consistently."},
-  {"id":"structured-03","category":"structured","prompt":"Return a JSON array containing exactly four objects. Each object must contain id (integer) and label (string). Use ids 1 through 4 and labels A through D."},
-  {"id":"structured-04","category":"structured","prompt":"Return exactly one JSON object with fields items and total. items must be an array of three numbers [4, 9, 12], and total must equal their sum."},
-  {"id":"structured-05","category":"structured","prompt":"Return exactly this schema as JSON: language (string), compiled (boolean), extensions (string array). Use TypeScript, true, and extensions [".ts", ".tsx"]."},
-  {"id":"instruction-01","category":"instruction","prompt":"Explain photosynthesis to a 12-year-old in exactly three bullet points. Do not use the word chlorophyll."},
-  {"id":"instruction-02","category":"instruction","prompt":"Summarize this statement in exactly 15 words: Reliable experiments require controlled variables, repeatable procedures, transparent measurements, and honest reporting of uncertainty."},
-  {"id":"instruction-03","category":"instruction","prompt":"Give exactly five practical steps for debugging a failing automated test. Number the steps 1 through 5 and keep each step under 15 words."},
-  {"id":"instruction-04","category":"instruction","prompt":"Explain the difference between authentication and authorization using exactly one analogy and one technical sentence."},
-  {"id":"instruction-05","category":"instruction","prompt":"Write a two-sentence explanation of why reproducibility matters in scientific research. Do not use the words important or trust."}
+  {
+    "id": "reasoning-01",
+    "category": "reasoning",
+    "prompt": "A library has 240 books. Three-fifths are fiction. Of the fiction books, one-quarter are mysteries. How many mystery books are there? Give the calculation and final number."
+  },
+  {
+    "id": "reasoning-02",
+    "category": "reasoning",
+    "prompt": "A sequence begins 3, 7, 15, 31, 63. Identify the simplest rule generating the sequence and give the next two terms."
+  },
+  {
+    "id": "reasoning-03",
+    "category": "reasoning",
+    "prompt": "All researchers in Team A submitted a report. Mina is a researcher in Team A. What conclusion follows necessarily? State one conclusion and briefly explain why."
+  },
+  {
+    "id": "reasoning-04",
+    "category": "reasoning",
+    "prompt": "A machine processes 18 items in 6 minutes at a constant rate. How many items can it process in 25 minutes? Show the reasoning."
+  },
+  {
+    "id": "reasoning-05",
+    "category": "reasoning",
+    "prompt": "Three switches control three labeled lamps in another room. You may enter the lamp room only once. Describe a strategy that lets you determine which switch controls each lamp."
+  },
+  {
+    "id": "coding-01",
+    "category": "coding",
+    "prompt": "Write a TypeScript function that returns the first duplicate number in an array, scanning from left to right. Return null when there is no duplicate. State the time and space complexity."
+  },
+  {
+    "id": "coding-02",
+    "category": "coding",
+    "prompt": "Write a TypeScript function that groups an array of objects by a string key and returns a Record<string, object[]>. Include a concise example."
+  },
+  {
+    "id": "coding-03",
+    "category": "coding",
+    "prompt": "Given the TypeScript expression const value = input?.items?.[0]?.name ?? unknown, explain exactly what happens when input is null, items is missing, the array is empty, and name is undefined."
+  },
+  {
+    "id": "coding-04",
+    "category": "coding",
+    "prompt": "Design a TypeScript function that validates whether a string is a valid UUID v4 using a regular expression. Mention one limitation of regex-only validation."
+  },
+  {
+    "id": "coding-05",
+    "category": "coding",
+    "prompt": "A JavaScript function repeatedly concatenates strings inside a loop of n iterations. Explain why this can be inefficient and provide a clearer alternative using an array and join()."
+  },
+  {
+    "id": "structured-01",
+    "category": "structured",
+    "prompt": "Return exactly these JSON fields: name, country, capital. Use the values: name=Japan, country=Asia, capital=Tokyo. Do not include any other fields."
+  },
+  {
+    "id": "structured-02",
+    "category": "structured",
+    "prompt": "Return a JSON object with exactly three fields: score (number 0-100), passed (boolean), reason (string). Use score 84 and infer the other two fields consistently."
+  },
+  {
+    "id": "structured-03",
+    "category": "structured",
+    "prompt": "Return a JSON array containing exactly four objects. Each object must contain id (integer) and label (string). Use ids 1 through 4 and labels A through D."
+  },
+  {
+    "id": "structured-04",
+    "category": "structured",
+    "prompt": "Return exactly one JSON object with fields items and total. items must be an array of three numbers [4, 9, 12], and total must equal their sum."
+  },
+  {
+    "id": "structured-05",
+    "category": "structured",
+    "prompt": "Return exactly this schema as JSON: language (string), compiled (boolean), extensions (string array). Use TypeScript, true, and extensions [dot-ts, dot-tsx]."
+  },
+  {
+    "id": "instruction-01",
+    "category": "instruction",
+    "prompt": "Explain photosynthesis to a 12-year-old in exactly three bullet points. Do not use the word chlorophyll."
+  },
+  {
+    "id": "instruction-02",
+    "category": "instruction",
+    "prompt": "Summarize this statement in exactly 15 words: Reliable experiments require controlled variables, repeatable procedures, transparent measurements, and honest reporting of uncertainty."
+  },
+  {
+    "id": "instruction-03",
+    "category": "instruction",
+    "prompt": "Give exactly five practical steps for debugging a failing automated test. Number the steps 1 through 5 and keep each step under 15 words."
+  },
+  {
+    "id": "instruction-04",
+    "category": "instruction",
+    "prompt": "Explain the difference between authentication and authorization using exactly one analogy and one technical sentence."
+  },
+  {
+    "id": "instruction-05",
+    "category": "instruction",
+    "prompt": "Write a two-sentence explanation of why reproducibility matters in scientific research. Do not use the words important or trust."
+  }
 ]
