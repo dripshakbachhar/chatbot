@@ -15,7 +15,10 @@
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test"
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
+    "local:infra:up": "docker compose -f docker-compose.local.yml up -d",
+    "local:infra:down": "docker compose -f docker-compose.local.yml down",
+    "local:infra:logs": "docker compose -f docker-compose.local.yml logs -f"
   },
   "dependencies": {
     "@ai-sdk/provider": "^3.0.3",

@@ -3,16 +3,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { auth } from "@/app/(auth)/auth";
+import {
+  MAX_IMAGE_SIZE,
+  validateImageFile,
+} from "@/lib/security/file-validation";
 
 const FileSchema = z.object({
-  file: z
-    .instanceof(Blob)
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: "File size should be less than 5MB",
-    })
-    .refine((file) => ["image/jpeg", "image/png"].includes(file.type), {
-      message: "File type should be JPEG or PNG",
-    }),
+  file: z.instanceof(Blob),
 });
 
 export async function POST(request: Request) {
@@ -26,6 +23,14 @@ export async function POST(request: Request) {
     return new Response("Request body is empty", { status: 400 });
   }
 
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > MAX_IMAGE_SIZE + 128 * 1024) {
+    return NextResponse.json(
+      { error: "Request body is too large" },
+      { status: 413 }
+    );
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as Blob;
@@ -37,19 +42,24 @@ export async function POST(request: Request) {
     const validatedFile = FileSchema.safeParse({ file });
 
     if (!validatedFile.success) {
-      const errorMessage = validatedFile.error.errors
-        .map((error) => error.message)
-        .join(", ");
+      return NextResponse.json(
+        { error: "Invalid file upload" },
+        { status: 400 }
+      );
+    }
 
-      return NextResponse.json({ error: errorMessage }, { status: 400 });
+    const validationError = await validateImageFile(file);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
     const filename = (formData.get("file") as File).name;
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const objectPath = `uploads/${session.user.id}/${crypto.randomUUID()}-${safeName}`;
     const fileBuffer = await file.arrayBuffer();
 
     try {
-      const data = await put(`${safeName}`, fileBuffer, {
+      const data = await put(objectPath, fileBuffer, {
         access: "public",
       });
 

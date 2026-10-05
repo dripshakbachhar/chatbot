@@ -60,6 +60,11 @@ export { getStreamContext };
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
 
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (contentLength > 1 * 1024 * 1024) {
+    return new ChatbotError("bad_request:api").toResponse();
+  }
+
   try {
     const json = await request.json();
     requestBody = postRequestBodySchema.parse(json);
@@ -156,11 +161,9 @@ export async function POST(request: Request) {
       ];
     }
 
-    const { longitude, latitude, city, country } = geolocation(request);
+    const { city, country } = geolocation(request);
 
     const requestHints: RequestHints = {
-      longitude,
-      latitude,
       city,
       country,
     };
@@ -261,6 +264,7 @@ export async function POST(request: Request) {
             if (existingMsg) {
               await updateMessage({
                 id: finishedMsg.id,
+                chatId: id,
                 parts: finishedMsg.parts,
               });
             } else {
@@ -366,7 +370,10 @@ export async function DELETE(request: Request) {
     return new ChatbotError("forbidden:chat").toResponse();
   }
 
-  const deletedChat = await deleteChatById({ id });
+  const deletedChat = await deleteChatById({
+    id,
+    userId: session.user.id,
+  });
 
   return Response.json(deletedChat, { status: 200 });
 }
