@@ -106,7 +106,7 @@ async function main() {
 
   await writeFile(
     outputPath,
-    JSON.stringify(
+    `${JSON.stringify(
       {
         benchmarkVersion: 1,
         taskCount: tasks.length,
@@ -120,7 +120,7 @@ async function main() {
       },
       null,
       2
-    ) + "\n",
+    )}\n`,
     "utf8"
   );
 
