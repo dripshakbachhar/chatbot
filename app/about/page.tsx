@@ -1,5 +1,11 @@
+import {
+  ArrowLeftIcon,
+  DatabaseIcon,
+  FileTextIcon,
+  LockKeyholeIcon,
+  SparklesIcon,
+} from "lucide-react";
 import Link from "next/link";
-import { ArrowLeftIcon, DatabaseIcon, FileTextIcon, LockKeyholeIcon, SparklesIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +23,7 @@ export default function AboutPage() {
     <main className="min-h-dvh bg-background">
       <div className="mx-auto w-full max-w-4xl px-6 py-10 md:px-10 md:py-16">
         <div className="mb-10 flex items-center justify-between gap-4">
-          <Button asChild variant="ghost" size="sm">
+          <Button asChild size="sm" variant="ghost">
             <Link href="/">
               <ArrowLeftIcon />
               Back to chat
@@ -68,7 +74,8 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="text-muted-foreground text-sm leading-6">
               The workspace supports file attachments and document-oriented
-              tools, backed by the application&apos;s storage and artifact flows.
+              tools, backed by the application&apos;s storage and artifact
+              flows.
             </CardContent>
           </Card>
           <Card>
@@ -107,7 +114,11 @@ export default function AboutPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild variant="outline">
-              <a href="https://github.com/dripshakbachhar/chatbot" rel="noreferrer" target="_blank">
+              <a
+                href="https://github.com/dripshakbachhar/chatbot"
+                rel="noreferrer"
+                target="_blank"
+              >
                 View repository
               </a>
             </Button>
